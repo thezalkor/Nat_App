@@ -34,11 +34,14 @@ namespace Natalie_App
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            ChartArea chartArea1 = new ChartArea();
-            Legend legend1 = new Legend();
-            Series series1 = new Series();
-            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Legend legend2 = new Legend();
+            Series series2 = new Series();
+            Title title2 = new Title();
             panel1 = new Panel();
+            button_ClearDataTesting = new Button();
+            button_SaveDataGrowth = new Button();
+            button_ReturnGrowth = new Button();
             label_Date = new Label();
             label_Weight = new Label();
             textBox_Date = new TextBox();
@@ -50,6 +53,7 @@ namespace Natalie_App
             errorProvider_Weight = new ErrorProvider(components);
             chart_GrowthTrend = new Chart();
             panel2 = new Panel();
+            button_LoadGrowthXml = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider_Weight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chart_GrowthTrend).BeginInit();
@@ -60,6 +64,10 @@ namespace Natalie_App
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = SystemColors.ActiveCaption;
+            panel1.Controls.Add(button_LoadGrowthXml);
+            panel1.Controls.Add(button_ClearDataTesting);
+            panel1.Controls.Add(button_SaveDataGrowth);
+            panel1.Controls.Add(button_ReturnGrowth);
             panel1.Controls.Add(label_Date);
             panel1.Controls.Add(label_Weight);
             panel1.Controls.Add(textBox_Date);
@@ -72,6 +80,41 @@ namespace Natalie_App
             panel1.Name = "panel1";
             panel1.Size = new Size(748, 166);
             panel1.TabIndex = 1;
+            // 
+            // button_ClearDataTesting
+            // 
+            button_ClearDataTesting.BackColor = Color.LightCoral;
+            button_ClearDataTesting.Font = new Font("Verdana", 11.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            button_ClearDataTesting.Location = new Point(568, 130);
+            button_ClearDataTesting.Name = "button_ClearDataTesting";
+            button_ClearDataTesting.Size = new Size(121, 33);
+            button_ClearDataTesting.TabIndex = 11;
+            button_ClearDataTesting.Text = "CLEAR ALL DATA";
+            button_ClearDataTesting.UseVisualStyleBackColor = false;
+            // 
+            // button_SaveDataGrowth
+            // 
+            button_SaveDataGrowth.BackColor = Color.Orchid;
+            button_SaveDataGrowth.Font = new Font("Verdana", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            button_SaveDataGrowth.Location = new Point(568, 37);
+            button_SaveDataGrowth.Name = "button_SaveDataGrowth";
+            button_SaveDataGrowth.Size = new Size(116, 45);
+            button_SaveDataGrowth.TabIndex = 10;
+            button_SaveDataGrowth.Text = "SAVE DATA";
+            button_SaveDataGrowth.UseVisualStyleBackColor = false;
+            button_SaveDataGrowth.Click += button_SaveDataGrowth_Click;
+            // 
+            // button_ReturnGrowth
+            // 
+            button_ReturnGrowth.BackColor = Color.Bisque;
+            button_ReturnGrowth.Font = new Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_ReturnGrowth.Location = new Point(670, 3);
+            button_ReturnGrowth.Name = "button_ReturnGrowth";
+            button_ReturnGrowth.Size = new Size(75, 23);
+            button_ReturnGrowth.TabIndex = 9;
+            button_ReturnGrowth.Text = "Return";
+            button_ReturnGrowth.UseVisualStyleBackColor = false;
+            button_ReturnGrowth.Click += button_ReturnGrowth_Click;
             // 
             // label_Date
             // 
@@ -132,7 +175,6 @@ namespace Natalie_App
             label_EnterWeight.Size = new Size(195, 14);
             label_EnterWeight.TabIndex = 3;
             label_EnterWeight.Text = "Enter Natalie's Weight Here.";
-            label_EnterWeight.Click += label1_Click;
             // 
             // button_Add
             // 
@@ -160,28 +202,28 @@ namespace Natalie_App
             // 
             // chart_GrowthTrend
             // 
-            chartArea1.AxisX.LabelStyle.Format = "dd/MM/yyyy";
-            chartArea1.AxisX.Title = "Date";
-            chartArea1.AxisY.Title = "Weight (Kg)";
-            chartArea1.Name = "ChartArea1";
-            chart_GrowthTrend.ChartAreas.Add(chartArea1);
+            chartArea2.AxisX.LabelStyle.Format = "dd/MM/yyyy";
+            chartArea2.AxisX.Title = "Date";
+            chartArea2.AxisY.Title = "Weight (Kg)";
+            chartArea2.Name = "ChartArea1";
+            chart_GrowthTrend.ChartAreas.Add(chartArea2);
             chart_GrowthTrend.ImeMode = ImeMode.NoControl;
-            legend1.Name = "Legend1";
-            chart_GrowthTrend.Legends.Add(legend1);
+            legend2.Name = "Legend1";
+            chart_GrowthTrend.Legends.Add(legend2);
             chart_GrowthTrend.Location = new Point(12, 3);
             chart_GrowthTrend.Name = "chart_GrowthTrend";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.LegendText = "Weight";
-            series1.Name = "Series1";
-            chart_GrowthTrend.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.LegendText = "Weight";
+            series2.Name = "Series1";
+            chart_GrowthTrend.Series.Add(series2);
             chart_GrowthTrend.Size = new Size(748, 300);
             chart_GrowthTrend.TabIndex = 9;
             chart_GrowthTrend.TabStop = false;
             chart_GrowthTrend.Text = "chart1";
-            title1.Name = "Growth Trend";
-            chart_GrowthTrend.Titles.Add(title1);
+            title2.Name = "Growth Trend";
+            chart_GrowthTrend.Titles.Add(title2);
             // 
             // panel2
             // 
@@ -191,6 +233,18 @@ namespace Natalie_App
             panel2.Name = "panel2";
             panel2.Size = new Size(779, 310);
             panel2.TabIndex = 10;
+            // 
+            // button_LoadGrowthXml
+            // 
+            button_LoadGrowthXml.BackColor = Color.DarkOrange;
+            button_LoadGrowthXml.Font = new Font("Verdana", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            button_LoadGrowthXml.Location = new Point(568, 88);
+            button_LoadGrowthXml.Name = "button_LoadGrowthXml";
+            button_LoadGrowthXml.Size = new Size(116, 36);
+            button_LoadGrowthXml.TabIndex = 12;
+            button_LoadGrowthXml.Text = "Load Data";
+            button_LoadGrowthXml.UseVisualStyleBackColor = false;
+            button_LoadGrowthXml.Click += button_LoadGrowthXml_Click;
             // 
             // Form1
             // 
@@ -222,5 +276,10 @@ namespace Natalie_App
         private Label label_Weight;
         private Chart chart_GrowthTrend;
         private Panel panel2;
+        private Button button_ReturnGrowth;
+        private Button button_SaveDataGrowth;
+        private Button button_ClearDataTesting;
+        private Button button_loadGrowthXML;
+        private Button button_LoadGrowthXml;
     }
 }

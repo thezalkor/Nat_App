@@ -1,6 +1,7 @@
 
 using System.Globalization;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Xml;
 
 namespace Natalie_App
 {
@@ -9,11 +10,6 @@ namespace Natalie_App
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -28,12 +24,12 @@ namespace Natalie_App
             listbox_Weights.Items.Add(newWeight);
 
             // Adds Date and Weight to Chart
-          
-            if(double.TryParse(newNum, out double num) && DateTime.TryParse(newDate, out DateTime date))
+
+            if (double.TryParse(newNum, out double num) && DateTime.TryParse(newDate, out DateTime date))
             {
                 chart_GrowthTrend.Series["Series1"].Points.AddXY(date, num);
             }
-            //chart_GrowthTrend.Series["Series1"].Points.AddXY(newDate, newNum);
+
 
 
 
@@ -41,7 +37,7 @@ namespace Natalie_App
             textBox_Date.Clear();
             errorProvider_Weight.SetError(listbox_Weights, "");
 
-          
+
         }
 
         private void textBox_Weight_Keypress(object sender, KeyPressEventArgs e)
@@ -92,15 +88,15 @@ namespace Natalie_App
             }
 
             // only allow numbers and / 
-            if (char.IsDigit(e.KeyChar)) 
+            if (char.IsDigit(e.KeyChar))
             {
                 errorProvider_Weight.SetError(textBox_Date, "");
                 return;
             }
-                
-            if(e.KeyChar == '/')
+
+            if (e.KeyChar == '/')
             {
-              errorProvider_Weight.SetError(textBox_Date, "");
+                errorProvider_Weight.SetError(textBox_Date, "");
                 return;
             }
 
@@ -108,13 +104,103 @@ namespace Natalie_App
             errorProvider_Weight.SetError(textBox_Date, "Enter Date in DD/MM/YYYY Format");
         }
 
+        private void button_ReturnGrowth_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            this.Dispose();
+        }
+
+        private void button_SaveDataGrowth_Click(object sender, EventArgs e)
+        {
+            SaveToXml("GrowthXML.xml");
+        }
+
+        private void SaveToXml(string GrowthXML)
+        {
+
+            try
+            {
+                string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GrowthXML);
+                MessageBox.Show($"This is the xpath : {path}");
+                // Save the data to an XML file
+                // Create a new XML file
+                System.Xml.XmlTextWriter writer = new System.Xml.XmlTextWriter(GrowthXML, System.Text.Encoding.UTF8);
+                writer.WriteStartDocument(true);
+                writer.Formatting = System.Xml.Formatting.Indented;
+                writer.Indentation = 2;
+
+                // Start the root element
+                writer.WriteStartElement("GrowthData");
+
+                // add listbox_Weights data
+                writer.WriteStartElement("listbox_Weights");
+                foreach (var item in listbox_Weights.Items)
+                {
+                    writer.WriteElementString("Weight", item.ToString());
+                }
+                writer.WriteEndElement();
+
+
+
+                // Ends the document
+                writer.WriteEndDocument();
+                writer.Close();
+                MessageBox.Show("Data Saved to XML File");
+
+
+
+                if (System.IO.File.Exists(GrowthXML))
+                {
+                    MessageBox.Show("File Exists");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to create File");
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Saving Data to XML File: " + ex.Message);
+            }
+
+        }
+
+        private void button_LoadGrowthXml_Click(object sender, EventArgs e)
+        {
+            loadGrowthXML("GrowthXML.xml");
+        }
+
+        private void loadGrowthXML(string GrowthXML)
+        {
+            try
+            {
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(GrowthXML);
+
+                XmlNodeList entryNodes = doc.SelectNodes("/GrowthData/listbox_Weights/Weight");
+
+                if (entryNodes == null)
+                {
+
+                    MessageBox.Show("No Data Found in XML File");
+                    return;
+                }
+
+                foreach (XmlNode node in entryNodes)
+                {
+                    string weight = node.SelectSingleNode("Weight").InnerText;
+                    listbox_Weights.Items.Add(weight);
+                }
+                MessageBox.Show("Data Loaded from XML File");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Loading Data from XML File: " + ex.Message);
+            }
+        }
     }
 }
 
-/*public class Data_GrowthTrend
-{
-    public string Dates { get; set; }
-    public double Weight { get; set; }
-}
 
-*/
