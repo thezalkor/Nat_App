@@ -1,4 +1,5 @@
 
+using Microsoft.VisualBasic.ApplicationServices;
 using System.Globalization;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
@@ -112,7 +113,14 @@ namespace Natalie_App
 
         private void button_SaveDataGrowth_Click(object sender, EventArgs e)
         {
-            SaveToXml("GrowthXML.xml");
+            //SaveToXml("GrowthXML.xml");
+            using (var writer = new StreamWriter("storeWeights.txt"))
+            {
+                foreach (var item in listbox_Weights.Items)
+                {
+                    writer.WriteLine(item.ToString());
+                }
+            }
         }
 
         private void SaveToXml(string GrowthXML)
@@ -168,7 +176,40 @@ namespace Natalie_App
 
         private void button_LoadGrowthXml_Click(object sender, EventArgs e)
         {
-            loadGrowthXML("GrowthXML.xml");
+            //loadGrowthXML("GrowthXML.xml");
+            using (var reader = new StreamReader("storeWeights.txt"))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    listbox_Weights.Items.Add(line);
+                }
+            }
+
+            UpdateChart();
+        }
+
+        // Update the chart when a new weight is added. Meaning when a user loads in data the chart will update to show the new data.
+        private void listBox_Weights_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateChart();
+        }
+
+
+        private void UpdateChart()
+        {
+            chart_GrowthTrend.Series["Series1"].Points.Clear();
+
+            foreach (string item in listbox_Weights.Items) {
+                string[] parts = item.Split(',');
+                string weight = parts[0].Split(':')[1].Trim();
+                string date = parts[1].Split(':')[1].Trim();
+
+                if (double.TryParse(weight, out double num) && DateTime.TryParse(date, out DateTime dateValue))
+                {
+                    chart_GrowthTrend.Series["Series1"].Points.AddXY(dateValue, num);
+                }
+            }
         }
 
         private void loadGrowthXML(string GrowthXML)
